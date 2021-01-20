@@ -8,6 +8,17 @@
                     編集する
                 </a>
             </div>
+            <form
+                style="display: inline-block;"
+                method="POST"
+                action="{{ route('posts.destroy', ['post' => $post]) }}"
+            >
+                @csrf
+                @method('DELETE')
+
+                <button class="btn btn-danger">削除する</button>
+            </form>
+
             <h1 class="h5 mb-4">
                 {{ $post->title }}
             </h1>
