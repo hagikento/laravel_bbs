@@ -1,23 +1,30 @@
 @extends('layout')
 
 @section('content')
+    @if(Auth::check())
+        <p>name: {{$user->name}}</p>
+    @else
+        <p>ログインしていません</p>
+    @endif
     <div class="container mt-4">
         <div class="border p-4">
             <div class="mb-4 text-right">
-                <a class="btn btn-primary" href="{{ route('posts.edit', ['post' => $post]) }}">
-                    編集する
-                </a>
-            </div>
-            <form
-                style="display: inline-block;"
-                method="POST"
-                action="{{ route('posts.destroy', ['post' => $post]) }}"
-            >
-                @csrf
-                @method('DELETE')
+                @if( $user->name  ===  $post->user_name )
+                    <a class="btn btn-primary" href="{{ route('posts.edit', ['post' => $post]) }}">
+                        編集する
+                    </a>
+                    <form
+                        style="display: inline-block;"
+                        method="POST"
+                        action="{{ route('posts.destroy', ['post' => $post]) }}"
+                    >
+                        @csrf
+                        @method('DELETE')
 
-                <button class="btn btn-danger">削除する</button>
-            </form>
+                        <button class="btn btn-danger">削除する</button>
+                    </form>
+                @endif
+            </div>
 
             <h1 class="h5 mb-4">
                 {{ $post->title }}
@@ -32,8 +39,13 @@
                     コメント
                 </h2>
 
-                <form class="mb-4" method="POST" action="{{ route('comments.store') }}">
+                <form class="mb-4" method="POST" action="{{ route('comments.store',[ 'post' => $post ]) }}">
                     @csrf
+
+                    <input
+                        name='user_name'
+                        type="hidden"
+                        value="{{$user->name}}">
 
                     <input
                         name="post_id"
@@ -71,6 +83,26 @@
                         <time class="text-secondary">
                             {{ $comment->created_at->format('Y.m.d H:i') }}
                         </time>
+                        <div class="text-right">
+                            name: {{$comment->user_name}}
+                        </div>
+                        @if( $user->name  ===  $comment->user_name )
+                            <div class="mb-4 text-right">
+                                <a class="btn btn-primary" href="{{ route('comments.edit', ['comment' => $comment]) }}">
+                                    コメント編集
+                                </a>
+                                <form
+                                    style="display: inline-block;"
+                                    method="POST"
+                                    action="{{ route('comments.destroy', ['comment' => $comment]) }}"
+                                >
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="btn btn-danger">削除する</button>
+                                </form>
+                            </div>
+                        @endif
                         <p class="mt-2">
                             {!! nl2br(e($comment->body)) !!}
                         </p>

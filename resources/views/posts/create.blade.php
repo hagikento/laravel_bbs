@@ -1,6 +1,11 @@
 @extends('layout')
 
 @section('content')
+@if(Auth::check())
+    <p>name: {{$user->name}}</p>
+    @else
+    <p>ログインしていません</p>
+    @endif
     <div class="container mt-4">
         <div class="border p-4">
             <h1 class="h5 mb-4">
@@ -46,6 +51,16 @@
                             </div>
                         @endif
                     </div>
+
+                    <div class="form-group">
+                        <input
+                            id="user_name"
+                            name="user_name"
+                            value="{{ $user->name }}"
+                            type="hidden"
+                        >
+                    </div>
+
                     <div class="mt-5">
                         <a class="btn btn-secondary" href="{{route('top')}}">
                             キャンセル

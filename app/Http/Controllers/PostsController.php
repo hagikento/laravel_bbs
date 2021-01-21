@@ -4,19 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::orderBy('created_at','desc')->get();
-
-        return view('posts.index',['posts'=>$posts]);
+        $user = Auth::user();
+        $posts = Post::orderBy('created_at','desc')->paginate(10);
+        $param = [
+            'posts' => $posts,
+            'user' => $user,
+        ];
+        return view('posts.index',$param);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('posts.create');
+        $user = Auth::user();
+        return view('posts.create',['user' => $user]);
     }
 
     public function store(Request $request)
@@ -24,15 +32,17 @@ class PostsController extends Controller
         $params = $request->validate([
             'title' => 'required|max:50',
             'body' => 'required|max:2000',
+            'user_name' => 'required',
         ]);
         Post::create($params);
         return redirect()->route('top');
     }
 
-    public function show($post_id)
+    public function show($post_id,Request $request)
     {
+        $user = Auth::user();
         $post = Post::findOrFail($post_id);
-        return view('posts.show',['post'=>$post]);
+        return view('posts.show',['post'=>$post, 'user'=>$user]);
     }
 
     public function edit($post_id)

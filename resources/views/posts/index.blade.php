@@ -1,6 +1,16 @@
 @extends('layout')
 
 @section('content')
+    @if(Auth::check())
+    <p>name: {{$user->name}}</p>
+    @else
+    <p>ログインしていません</p>
+    @endif
+    <a class="btn badge-primary" href="{{route('home')}}">
+        Login/Logout
+    </a>
+    <br></br>
+
     <div class="mb-4">
         <a href="{{ route('posts.create') }}" class="btn btn-primary">
             投稿を新規作成する
@@ -31,9 +41,15 @@
                             コメント{{$post->comments->count()}}件
                         </span>
                     @endif
+                    <span class="mr-2">
+                        投稿者: {{$post->user_name}}
+                    </span>
                 </div>
             </div>
         @endforeach
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+        {{$posts->onEachSide(3)->links('vendor.pagination.default')}}
     </div>
 @endsection
 
