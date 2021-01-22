@@ -52,7 +52,6 @@
                         <a class="btn btn-secondary" href="{{ route('posts.show', ['post' => $post]) }}">
                             キャンセル
                         </a>
-
                         <button type="submit" class="btn btn-primary">
                             更新する
                         </button>

@@ -24,4 +24,14 @@ Route::resource('comments', 'CommentsController', ['only' => ['store','edit','up
     ->middleware('auth');
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/auth', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('hello','HelloController@getLogin');
+
+Route::post('hello','HelloController@postLogin');
+
+Route::get('hello/logout','HelloController@getLogout');
+
+Route::get('hello/register',"HelloController@register");
+
+Route::post('hello/register',"HelloController@store");

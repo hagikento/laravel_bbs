@@ -6,8 +6,8 @@
     @else
     <p>ログインしていません</p>
     @endif
-    <a class="btn badge-primary" href="{{route('home')}}">
-        Login/Logout
+    <a class="btn badge-primary" href="/hello/logout">
+        Logout
     </a>
     <br></br>
 
