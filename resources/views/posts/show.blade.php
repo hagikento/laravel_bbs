@@ -9,7 +9,7 @@
     <div class="container mt-4">
         <div class="border p-4">
             <div class="mb-4 text-right">
-                @if( $user->name  ===  $post->user_name )
+                @if( isset($user) && $user->name  ===  $post->user_name )
                     <a class="btn btn-primary" href="{{ route('posts.edit', ['post' => $post]) }}">
                         編集する
                     </a>
@@ -35,6 +35,7 @@
             </p>
 
             <section>
+                @if(isset($user))
                 <h2 class="h5 mb-4">
                     コメント
                 </h2>
@@ -77,6 +78,7 @@
                         </button>
                     </div>
                 </form>
+                @endif
 
                 @forelse($post->comments as $comment)
                     <div class="border-top p-4">
@@ -86,7 +88,14 @@
                         <div class="text-right">
                             name: {{$comment->user_name}}
                         </div>
-                        @if( $user->name  ===  $comment->user_name )
+                        <div>
+                        @if($comment->is_liked_by_auth_user())
+                            <a href="{{ route('comment.unlike', ['id' => $comment->id]) }}" class="btn btn-success btn-sm">いいね<span class="badge">{{ $comment->likes->count() }}</span></a>
+                        @else
+                            <a href="{{ route('comment.like', ['id' => $comment->id]) }}" class="btn btn-secondary btn-sm">いいね<span class="badge">{{ $comment->likes->count() }}</span></a>
+                        @endif
+                        </div>
+                        @if( isset($user) && $user->name  ===  $comment->user_name )
                             <div class="mb-4 text-right">
                                 <a class="btn btn-primary" href="{{ route('comments.edit', ['comment' => $comment]) }}">
                                     コメント編集

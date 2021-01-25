@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Like;
+use Illuminate\Support\Facades\Auth;
 
 class CommentsController extends Controller
 {
@@ -47,6 +49,28 @@ class CommentsController extends Controller
         $post = $comment->post;
         \DB::table('comments')->where('id',$id)->delete();
         return redirect()->route('posts.show',['post'=>$post]);
+    }
+
+    public function like($id)
+    {
+        Like::create([
+        'comment_id' => $id,
+        'user_id' => Auth::id(),
+        ]);
+
+        session()->flash('success', 'You Liked the Reply.');
+
+        return redirect()->back();
+    }
+
+    public function unlike($id)
+    {
+        $like = Like::where('comment_id', $id)->where('user_id', Auth::id())->first();
+        $like->delete();
+
+        session()->flash('success', 'You Unliked the Reply.');
+
+        return redirect()->back();
     }
 
 }

@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','PostsController@index')->name('top')
-    ->middleware('auth');
+Route::get('/','PostsController@index')->name('top');
 
 Route::resource('posts','PostsController',['only'=>['create','store','show','edit','update','destroy']])
     ->middleware('auth');
+
+Route::resource('posts','PostsController',['only'=>['show']]);
+
 
 
 Route::resource('comments', 'CommentsController', ['only' => ['store','edit','update','destroy']])
@@ -35,3 +37,12 @@ Route::get('hello/logout','HelloController@getLogout');
 Route::get('hello/register',"HelloController@register");
 
 Route::post('hello/register',"HelloController@store");
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+Route::get('/welcome','HomeController@welcome');
+
+Route::get('/comment/like/{id}', 'CommentsController@like')->name('comment.like');
+Route::get('/comment/unlike/{id}', 'CommentsController@unlike')->name('comment.unlike');

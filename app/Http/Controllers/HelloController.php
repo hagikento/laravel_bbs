@@ -34,12 +34,12 @@ class HelloController extends Controller
     public function getLogOut()
     {
         Auth::logout();
-        return view('hello.logout');
+        return redirect()->route('top');
     }
 
     public function register()
     {
-        return view('hello.register');
+        return view('register');
     }
 
     public function store(Request $request)
