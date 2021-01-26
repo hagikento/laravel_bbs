@@ -16,6 +16,13 @@
             <a class="nevbar-brand" href="{{url('')}}">
                 Laravel BBS
             </a>
+            @if(Auth::check())
+                <div class="text-info">
+                <p>name: {{$user->name}}</p>
+                @else
+                <p>ログインしていません</p>
+                </div>
+            @endif
         </div>
     </header>
 

@@ -1,11 +1,9 @@
 @extends('layout')
 
 @section('content')
-    @if(Auth::check())
-    <p>name: {{$user->name}}</p>
-    @else
-    <p>ログインしていません</p>
-    @endif
+    @owner
+    <a class="" href="{{route('user.index')}}"> 管理者ページ</a>
+    @endowner
     @if (Route::has('login'))
         <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             @auth

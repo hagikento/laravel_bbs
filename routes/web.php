@@ -46,3 +46,7 @@ Route::get('/welcome','HomeController@welcome');
 
 Route::get('/comment/like/{id}', 'CommentsController@like')->name('comment.like');
 Route::get('/comment/unlike/{id}', 'CommentsController@unlike')->name('comment.unlike');
+
+
+Route::resource('user','UserController',['only'=>['index','store','update','destroy']])
+    ->middleware('owner_auth');
